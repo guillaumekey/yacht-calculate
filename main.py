@@ -3,7 +3,6 @@ import pandas as pd
 
 
 def get_crew_recommendation(length):
-    """Retourne la recommandation d'équipage en fonction de la longueur"""
     if 12 <= length <= 15:
         return "1 membre d'équipage"
     elif 16 <= length <= 22:
@@ -18,11 +17,10 @@ def get_crew_recommendation(length):
         return "7 à 8 membres d'équipage"
     elif 51 <= length <= 60:
         return "9 à 12 membres d'équipage"
-    return "1 membre d'équipage"  # Valeur par défaut
+    return "1 membre d'équipage"
 
 
 def calculate_crew_cost(length):
-    """Calcule le coût d'équipage en fonction de la longueur du bateau"""
     if 12 <= length <= 15:
         return 45000
     elif 16 <= length <= 22:
@@ -37,23 +35,14 @@ def calculate_crew_cost(length):
         return 430000
     elif 51 <= length <= 60:
         return 570000
-    return 45000  # Valeur par défaut
+    return 45000
 
 
 def calculate_yearly_costs(yacht_value, length):
-    # Assurance (0.5% de la valeur)
     insurance = yacht_value * 0.005
-
-    # Maintenance (3% de la valeur)
     maintenance = yacht_value * 0.03
-
-    # Frais d'amarrage
     docking = length * 1000
-
-    # Coût d'équipage basé sur la longueur
     crew_cost = calculate_crew_cost(length)
-
-    # Consommables (0.30% de la valeur)
     consumables = yacht_value * 0.0030
 
     return {
@@ -73,13 +62,12 @@ def main():
     st.title("💫 Calculateur de Coûts d'Entretien de Yacht")
 
     st.write("""
-    Cet outil vous aide à estimer les coûts annuels d'entretien de votre yacht.
-    Veuillez remplir les informations ci-dessous pour obtenir une estimation.
-    """)
+   Cet outil vous aide à estimer les coûts annuels d'entretien de votre yacht.
+   Veuillez remplir les informations ci-dessous pour obtenir une estimation.
+   """)
 
-    st.write("""
-    ⛵ Ce calculateur est destiné aux bateaux entre 12 et 60 mètres 
-    ou d'une valeur comprise entre 500 000€ et 20 millions d'euros 💶
+    st.warning("""
+    ⛵ Ce calculateur est destiné aux bateaux **entre 12 et 60 mètres** de longueur ou d'**une valeur comprise entre 500 000€ et 20 millions d'euros avec un equipage** 💶
     """)
 
     col1, col2 = st.columns(2)
@@ -97,14 +85,13 @@ def main():
     with col2:
         length = st.number_input(
             "Longueur du yacht (mètres)",
-            min_value=10,
+            min_value=12,
             max_value=60,
-            value=15,
+            value=12,
             step=1,
             help="Entrez la longueur totale du yacht"
         )
 
-    # Affichage de la recommandation d'équipage
     crew_recommendation = get_crew_recommendation(length)
     st.write("### 👥 Équipage recommandé")
     st.info(f"Pour un yacht de {length} mètres, la recommandation est de : **{crew_recommendation}**")
@@ -118,7 +105,6 @@ def main():
         col1, col2 = st.columns([2, 1])
         col1.write(f"**{category}**")
         col2.write(format_currency(cost))
-        # Ajouter le texte après les frais d'amarrage
         if category == "Frais d'amarrage":
             st.caption("*Les coûts mentionnés sont spécifiques au secteur de la **Côte d'Azur**.*")
 
@@ -139,14 +125,14 @@ def main():
     st.bar_chart(df)
 
     st.info("""
-    ℹ️ Note : Ces calculs sont des estimations basées sur des moyennes du secteur.
-    Les coûts réels peuvent varier en fonction de nombreux facteurs, notamment :
-    - La localisation et les tarifs d'amarrage locaux
-    - L'âge et l'état du yacht
-    - Le type de maintenance requis
-    - Les salaires locaux de l'équipage
-    - La consommation réelle des consommables
-    """)
+   ℹ️ Note : Ces calculs sont des estimations basées sur des moyennes du secteur.
+   Les coûts réels peuvent varier en fonction de nombreux facteurs, notamment :
+   - La localisation et les tarifs d'amarrage locaux
+   - L'âge et l'état du yacht
+   - Le type de maintenance requis
+   - Les salaires locaux de l'équipage
+   - La consommation réelle des consommables
+   """)
 
 
 if __name__ == "__main__":
